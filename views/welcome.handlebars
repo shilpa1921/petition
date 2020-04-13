@@ -1,0 +1,31 @@
+<div id="container1">
+    <h1 id="h1welcome">Welcome to my petition </h1>
+     
+    <form action="/welcome" method="POST" id="sign-form">
+
+    <div id="input_name">
+      <label for = "first">First Name</label>
+    <input id  = "first" name="first_name" placeholder="First name..." required >
+    <br>
+      <label for = "last">Last Name</label>
+      <input id  = "last" name="last_name" placeholder="Last name..." required >
+    </div>
+
+    <div id="sig-pic">
+      <p>Please sign below:</p>
+        <canvas id="canvas">
+
+        </canvas>
+    </div>
+    <input id="save-sig" name="sig" class="hidden" ></input>
+
+    <button id="submit">Submit</button>
+
+
+    </form>
+    {{#if error}}
+        <h2 id = "error">Oh no, something went wrong. Please try again!</h2>
+    {{/if}}
+
+
+</div>
