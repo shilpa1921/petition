@@ -79,6 +79,9 @@ app.get("/thankyou", (req, res) => {
                 let sigTotal = results.rowCount;
 
                 console.log("sig total: ", sigTotal);
+                // we can also get signature of last user by
+                // let len = sigToatl-1;
+                // let sig = results.rows[len].signature;
 
                 return sigTotal;
             })
