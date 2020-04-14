@@ -1,59 +1,34 @@
 (function () {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var clickX = [];
-    var clickY = [];
-    var clickDrag = [];
-    var paint;
+    const canvas = $("canvas");
+    const canvasContext = canvas[0].getContext("2d");
+    let mouseDown = false;
+    let offset = canvas.offset();
+    let left;
+    let top;
+    let dataURL;
 
-    canvas.addEventListener("mousedown", mouseDown, false);
-    canvas.addEventListener("mousemove", mouseXY, false);
-    document.body.addEventListener("mouseup", mouseUp, false);
+    canvas
+        .on("mousedown", (event) => {
+            mouseDown = true;
+            left = event.clientX - offset.left;
+            top = event.clientY - offset.top;
+            canvasContext.moveTo(left, top);
+        })
+        .on("mousemove", (event) => {
+            if (mouseDown) {
+                event.stopPropagation();
+                left = event.clientX - offset.left;
+                top = event.clientY - offset.top;
+                canvasContext.lineTo(left, top);
+                canvasContext.stroke();
 
-    function draw() {
-        context.clearRect(0, 0, 0, 0);
-
-        context.strokeStyle = "red";
-
-        context.lineWidth = 3;
-
-        for (var i = 0; i < clickX.length; i++) {
-            context.beginPath(); //create a path
-
-            if (clickDrag[i] && i) {
-                context.moveTo(clickX[i - 1], clickY[i - 1]); //move to
-            } else {
-                context.moveTo(clickX[i] - 1, clickY[i]); //move to
+                dataURL = canvas[0].toDataURL();
+                $("#signature").val(dataURL);
             }
-            context.lineTo(clickX[i], clickY[i]); //draw a line
-            context.stroke(); //filled with "ink"
-            context.closePath(); //close path
-        }
-    }
+        });
 
-    function addClick(x, y, dragging) {
-        clickX.push(x);
-        clickY.push(y);
-        clickDrag.push(dragging);
-    }
-
-    function mouseXY(e) {
-        if (paint) {
-            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-            draw();
-        }
-    }
-
-    function mouseUp() {
-        paint = false;
-    }
-
-    function mouseDown(e) {
-        var mouseX = e.pageX - this.offsetLeft;
-        var mouseY = e.pageY - this.offsetTop;
-
-        paint = true;
-        addClick(mouseX, mouseY, true);
-        draw();
-    }
+    $("body").on("mouseup", (event) => {
+        mouseDown = false;
+        event.stopPropagation();
+    });
 })();

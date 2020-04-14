@@ -20,16 +20,20 @@ app.get("/", (req, res) => {
     console.log("get request to / route succeeded");
     res.redirect("/welcome");
 });
+
 app.get("/welcome", (req, res) => {
-    res.render("welcome", {
-        layout: "main",
-    });
+    // if (!req.cookies.agreed) {
+    res.render("welcome");
+    //     } else {
+    //         res.redirect("/thankyou");
+    //     }
 });
+
 app.post("/welcome", (req, res) => {
     //capture inputs
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
-    const signature = "sig placeholder";
+    const signature = req.body.signature;
     if (first_name != "" && last_name != "" && signature != "") {
         // insert the data as values in my signatures table
         db.addName(first_name, last_name, signature)
@@ -40,7 +44,7 @@ app.post("/welcome", (req, res) => {
                 console.log("Error in post welcome ", err);
             });
         // set cookie & redirect
-        res.cookie("cokkie", true);
+        res.cookie("agreed", true);
         res.redirect("/thankyou");
     } else if (
         // there is either an error or
@@ -54,46 +58,54 @@ app.post("/welcome", (req, res) => {
 });
 
 app.get("/thankyou", (req, res) => {
-    db.sigTotal()
-        .then((results) => {
-            let sigTotal = results;
-            console.log("sig total: ", sigTotal);
-            return sigTotal;
-        })
-        .then((sigTotal) => {
-            res.render("thankyou", {
-                layout: "main",
-                sigTotal: sigTotal,
+    if (!req.cookies.agreed) {
+        res.redirect("/welcome");
+    } else {
+        db.sigTotal()
+            .then((results) => {
+                let sigTotal = results;
+                console.log("sig total: ", sigTotal);
+                return sigTotal;
+            })
+            .then((sigTotal) => {
+                res.render("thankyou", {
+                    layout: "main",
+                    sigTotal: sigTotal,
+                });
+            })
+            .catch((err) => {
+                console.log("err in get thankyou ", err);
+                //TO DO: reroute to "/welcome" with error message
             });
-        })
-        .catch((err) => {
-            console.log("err in get thankyou ", err);
-            //TO DO: reroute to "/welcome" with error message
-        });
+    }
 });
 
 app.get("/signatories", (req, res) => {
-    db.getNames()
-        .then((results) => {
-            let list = [];
+    if (!req.cookies.agreed) {
+        res.redirect("/welcome");
+    } else {
+        db.getNames()
+            .then((results) => {
+                let list = [];
 
-            for (let i = 0; i < results.length; i++) {
-                let item = results[i];
+                for (let i = 0; i < results.length; i++) {
+                    let item = results[i];
 
-                list.push(` ${item.first_name} ${item.last_name}`);
-            }
-            console.log("list: ", list);
-            return list;
-        })
-        .then((list) => {
-            res.render("signatories", {
-                layout: "main",
-                signed: list,
+                    list.push(` ${item.first_name} ${item.last_name}`);
+                }
+                console.log("list: ", list);
+                return list;
+            })
+            .then((list) => {
+                res.render("signatories", {
+                    layout: "main",
+                    signed: list,
+                });
+            })
+            .catch((err) => {
+                console.log("err in get signatories", err);
             });
-        })
-        .catch((err) => {
-            console.log("err in get signatories", err);
-        });
+    }
 });
 
 app.listen(8080, () => console.log("Server running"));
