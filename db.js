@@ -3,7 +3,7 @@ const db = spicedPg("postgres:postgres:postgres@localhost:5432/petition"); //nee
 
 module.exports.getNames = () => {
     return db
-        .query(`SELECT first_name, last_name FROM signatures`)
+        .query(`SELECT first_name, last_name, id FROM signatures`)
         .then((results) => {
             return results.rows;
         })
@@ -16,7 +16,7 @@ module.exports.addName = (first_name, last_name, signature) => {
     return db.query(
         `
     INSERT INTO signatures (first_name, last_name, signature)
-    VALUES($1, $2, $3)`,
+    VALUES($1, $2, $3) RETURNING id`,
         [first_name, last_name, signature]
     );
 };
@@ -25,9 +25,20 @@ module.exports.sigTotal = () => {
     return db
         .query(`SELECT * FROM signatures`)
         .then((results) => {
-            return results.rowCount;
+            return results;
         })
         .catch((err) => {
             console.log("err", err);
+        });
+};
+
+module.exports.getSig = (signatureId) => {
+    return db
+        .query(`SELECT signature FROM signatures WHERE id = ${signatureId} `)
+        .then((results) => {
+            return results.rows[0].signature;
+        })
+        .catch((err) => {
+            console.log("errrrrrrr", err);
         });
 };
