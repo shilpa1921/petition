@@ -3,7 +3,7 @@ const db = spicedPg("postgres:postgres:postgres@localhost:5432/petition"); //nee
 
 module.exports.getNames = () => {
     return db
-        .query(`SELECT first_name, last_name, id FROM signatures`)
+        .query(`SELECT user_id FROM signatures`)
         .then((results) => {
             return results.rows;
         })
@@ -12,12 +12,21 @@ module.exports.getNames = () => {
         });
 };
 
-module.exports.addName = (first_name, last_name, signature) => {
+module.exports.addName = (signature, user_id) => {
     return db.query(
         `
-    INSERT INTO signatures (first_name, last_name, signature)
-    VALUES($1, $2, $3) RETURNING id`,
-        [first_name, last_name, signature]
+    INSERT INTO signatures (signature, user_id)
+    VALUES($1, $2) RETURNING id`,
+        [signature, user_id]
+    );
+};
+
+module.exports.addData = (first_name, last_name, emailadd, password) => {
+    return db.query(
+        `
+    INSERT INTO users (first_name, last_name, email, password)
+    VALUES($1, $2, $3, $4) RETURNING id`,
+        [first_name, last_name, emailadd, password]
     );
 };
 
@@ -37,6 +46,28 @@ module.exports.getSig = (signatureId) => {
         .query(`SELECT signature FROM signatures WHERE id = ${signatureId} `)
         .then((results) => {
             return results.rows[0].signature;
+        })
+        .catch((err) => {
+            console.log("errrrrrrr", err);
+        });
+};
+
+module.exports.checkSign = (sessionid) => {
+    return db
+        .query(`SELECT user_id FROM signatures WHERE user_id = ${sessionid} `)
+        .then((results) => {
+            return results;
+        })
+        .catch((err) => {
+            console.log("errrrrrrr", err);
+        });
+};
+
+module.exports.getpass = (email) => {
+    return db
+        .query(`SELECT * FROM users WHERE email = '${email}';`)
+        .then((results) => {
+            return results;
         })
         .catch((err) => {
             console.log("errrrrrrr", err);

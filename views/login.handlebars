@@ -1,0 +1,23 @@
+<div id = "logcontainer">
+    <h1>Please login Here</h1>
+
+      {{#if error3}}
+        <h2 id = "error1">please enter the correct email address and password</h2>
+      {{/if}}
+     <form action="/login" method="POST" id="sign-form">
+    
+  
+    
+    <input id  = "email" name="email_add" placeholder="Email Address..."  autocomplete="off">
+    <br>
+    
+    <input id  = "password" name="password" type = "password" placeholder="password..."  >
+   
+    <br>
+    <button id = "regsignup">LOGIN</button>
+    </form>
+
+    
+
+
+</div>

@@ -1,0 +1,32 @@
+<div id = "regcontainer">
+    <h1>Welcome to my petition please register here</h1>
+     {{#if error2}}
+        <h2 id = "error1">please enter the email address</h2>
+    {{/if}}
+     <form action="/registration" method="POST" id="sign-form">
+    
+    <input id  = "first" name="first_name" placeholder="First name..." required >
+    <br>
+    
+    <input id  = "last" name="last_name" placeholder="last name..." required >
+    <br>
+    
+    <input id  = "email" name="email_add" placeholder="Email Address..." autocomplete="off">
+    <br>
+    
+    <input id  = "password" name="password" type = "password" placeholder="password..."  >
+   
+    <br>
+    <button id = "regsignup"> SIGN UP</button>
+    </form>
+     {{#if error1}}
+        <h2 id = "error1">Oh no, Please fill all the fields</h2>
+    {{/if}}
+
+
+    <h3>If you are already member, Please <a href = "/login">Login in</a></h3>
+
+
+</div>
+
+

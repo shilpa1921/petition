@@ -81,6 +81,18 @@ canvas {
     text-align: center;
     color: red;
 }
+#error1 {
+    text-align: center;
+    color: blue;
+}
+#error2 {
+    text-align: center;
+    color: blue;
+}
+#error3 {
+    text-align: center;
+    color: blue;
+}
 
 /* signatories page */
 #container3 {
@@ -101,4 +113,30 @@ canvas {
     padding-left: 600px;
     font-weight: 900;
     font-family: "Courier New", Courier, monospace;
+}
+
+#regcontainer {
+    background-image: url(../regbackground.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 100vh;
+    padding-top: 80px;
+    color: darkred;
+}
+#logcontainer {
+    background-image: url(../loginpage.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 100vh;
+    padding-top: 80px;
+    color: darkred;
+}
+
+#regsignup {
+    height: 50px;
+    width: 180px;
+    background-color: darkgray;
+    border-radius: 8px;
+    font-size: 30px;
+    margin: 30px;
 }
