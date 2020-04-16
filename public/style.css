@@ -6,7 +6,8 @@
 #container1 {
     min-height: 100vh;
     padding: 50px;
-    background-color: pink;
+    background-image: url(../welcome.jpg);
+    background-size: cover;
     text-align: center;
 }
 label {
@@ -93,6 +94,10 @@ canvas {
     text-align: center;
     color: blue;
 }
+#profilecontaine h3 {
+    text-align: center;
+    color: blue;
+}
 
 /* signatories page */
 #container3 {
@@ -132,11 +137,19 @@ canvas {
     color: darkred;
 }
 
+#profilecontainer {
+    background-image: url(../profile.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 100vh;
+    padding-top: 80px;
+    color: darkred;
+}
 #regsignup {
     height: 50px;
     width: 180px;
     background-color: darkgray;
-    border-radius: 8px;
+    border-radius: 15px;
     font-size: 30px;
     margin: 30px;
 }

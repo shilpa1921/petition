@@ -53,7 +53,7 @@ app.post("/welcome", (req, res) => {
         db.addName(signature, user_id)
             .then((results) => {
                 console.log("issue", results);
-                req.session.signatureId = results.rows[0].id;
+                req.session.signatureId = user_id;
                 res.redirect("/thankyou");
             })
             .catch((err) => {
@@ -66,6 +66,7 @@ app.post("/welcome", (req, res) => {
 
 app.get("/thankyou", (req, res) => {
     const { signatureId } = req.session;
+    console.log("");
     let signature1;
     if (signatureId) {
         db.getSig(signatureId)
@@ -108,17 +109,23 @@ app.get("/thankyou", (req, res) => {
 
 app.get("/signatories", (req, res) => {
     const { signatureId } = req.session;
+
     if (signatureId) {
+        console.log("Errorrrrrrrrrrr", signatureId);
         db.getNames()
             .then((results) => {
+                console.log("aaaaaaaaaa", results[1].first_name);
                 let list = [];
 
                 for (let i = 0; i < results.length; i++) {
                     let item = results[i];
-
-                    list.push(
-                        ` ${item.id} ${item.first_name} ${item.last_name} `
-                    );
+                    list.push({
+                        first: ` ${item.first_name}`,
+                        last: `${item.last_name} `,
+                        age: `  ==>  ${item.age}`,
+                        city: ` ==> ${item.city}`,
+                        url: `  ==> ${item.url} `,
+                    });
                 }
                 console.log("list: ", list);
                 return list;
@@ -168,7 +175,7 @@ app.post("/registration", (req, res) => {
                     .then((results) => {
                         req.session.userId = results.rows[0].id;
                         console.log("userid", req.session.userId);
-                        res.redirect("/welcome");
+                        res.redirect("/profile");
                     })
                     .catch((err) => {
                         console.log("Error in post registration ", err);
@@ -180,6 +187,37 @@ app.post("/registration", (req, res) => {
         });
     }
 });
+app.get("/profile", (req, res) => {
+    // const { userId } = req.session;
+    // if (userId) {
+    //     res.redirect("/welcome");
+    // } else {
+    res.render("profile");
+    // }
+});
+
+app.post("/profile", (req, res) => {
+    let age = req.body.age;
+    let city = req.body.city;
+    let url = req.body.url;
+    let user_id = req.session.userId;
+    if (url.startsWith("http")) {
+        db.adduserinfo(age, city, url, user_id)
+            .then(() => {
+                console.log("sucsessfull inserted");
+            })
+            .catch((err) => {
+                console.log("error in inserting user info", err);
+            });
+        res.redirect("/profile");
+    } else {
+        console.log("Bad url", url);
+        res.render("profile", {
+            error4: true,
+        });
+    }
+});
+
 app.get("/login", (req, res) => {
     // const { userId } = req.session;
     // if (userId) {
@@ -218,10 +256,11 @@ app.post("/login", (req, res) => {
                 sessionid = req.session.userId;
                 db.checkSign(sessionid).then((results) => {
                     let count = results.rowCount;
-                    console.log("count", results);
+
                     if (count == 0) {
                         res.redirect("/welcome");
                     } else {
+                        req.session.signatureId = sessionid;
                         res.redirect("/thankyou");
                     }
                 });

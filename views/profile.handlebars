@@ -1,0 +1,19 @@
+<div id = "profilecontainer">
+    <h1>Welcome to my petition please fill the Details</h1>
+     {{#if error4}}
+      <h3 >Please enter valid Url</h3>
+     {{/if}}
+     <form action="/profile" method="POST" id="sign-form">
+    
+    <input id  = "age" name="age" placeholder="age">
+    <br>
+    
+    <input id  = "city" name="city" placeholder="city" >
+    <br>
+    
+    <input id  = "url" name="url" placeholder="url" >
+    <br>
+    
+    
+    <button id = "regsignup"> CONTINUE</button>
+    </form>
