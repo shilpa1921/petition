@@ -24,10 +24,6 @@ app.set("view engine", "handlebars");
 
 app.get("/", (req, res) => {
     console.log("get request to / route succeeded");
-
-    // req.session.msg = "bigSecret99";
-    // req.session.permission = true;
-    // console.log("session cookie, after value is set: ", req.session);
     res.redirect("/registration");
 });
 
@@ -114,17 +110,16 @@ app.get("/signatories", (req, res) => {
         console.log("Errorrrrrrrrrrr", signatureId);
         db.getNames()
             .then((results) => {
-                console.log("aaaaaaaaaa", results[1].first_name);
                 let list = [];
 
                 for (let i = 0; i < results.length; i++) {
                     let item = results[i];
                     list.push({
                         first: ` ${item.first_name}`,
-                        last: `${item.last_name} `,
-                        age: `  ==>  ${item.age}`,
-                        city: ` ==> ${item.city}`,
-                        url: `  ==> ${item.url} `,
+                        last: `  ${item.last_name} `,
+                        age: ` ${item.age}`,
+                        city: `${item.city}`,
+                        url: ` ${item.url} `,
                     });
                 }
                 console.log("list: ", list);
@@ -141,6 +136,23 @@ app.get("/signatories", (req, res) => {
             });
     } else {
         res.redirect("/welcome");
+    }
+});
+app.get("/signatories/:city", (req, res) => {
+    const { signatureId } = req.session;
+    // if a cookie is set, render
+    if (signatureId) {
+        const city = req.params.city;
+        db.byCityName(city)
+            .then((result) => {
+                console.log("city names", result);
+                res.render("city", { city: city, names: result });
+            })
+            .catch((err) => {
+                console.log("Error in city wise signed: ", err);
+            });
+    } else {
+        res.redirect("/register");
     }
 });
 
@@ -274,6 +286,6 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.listen(8082, () => {
+app.listen(8080, () => {
     console.log("my petition server is running");
 });

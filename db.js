@@ -13,6 +13,18 @@ module.exports.getNames = () => {
             console.log("err111", err);
         });
 };
+module.exports.byCityName = (city) => {
+    return db
+        .query(
+            `SELECT users.first_name AS first_name, users.last_name AS last_name, user_profiles.age As age, user_profiles.url As url FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON signatures.user_id = user_profiles.user_id WHERE user_profiles.city = '${city}';  `
+        )
+        .then((results) => {
+            return results.rows;
+        })
+        .catch((err) => {
+            console.log("err111", err);
+        });
+};
 module.exports.addData = (first_name, last_name, emailadd, password) => {
     return db.query(
         `

@@ -103,7 +103,7 @@ canvas {
 #container3 {
     min-height: 100vh;
 
-    background-color: pink;
+    background-image: url(../sign.jpg);
     background-size: cover;
 }
 
@@ -138,6 +138,14 @@ canvas {
 }
 
 #profilecontainer {
+    background-image: url(../profile.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 100vh;
+    padding-top: 80px;
+    color: darkred;
+}
+#citycontainer {
     background-image: url(../profile.jpg);
     background-size: cover;
     text-align: center;
