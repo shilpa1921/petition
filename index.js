@@ -33,24 +33,27 @@ app.get("/registration", (req, res) => {
 
 app.get("/welcome", (req, res) => {
     const { signatureId } = req.session;
+    const { userId } = req.session;
 
-    // if (signatureId) {
-    //     res.redirect("/thankyou");
-    // } else {
-    res.render("welcome");
-    // }
+    if (signatureId) {
+        res.redirect("/thankyou");
+    } else if (userId) {
+        res.render("welcome");
+    } else {
+        res.redirect("/registration");
+    }
 });
 
 app.post("/welcome", (req, res) => {
     const signature = req.body.signature;
     const user_id = req.session.userId;
     console.log("siganture", signature);
+
     if (signature != "") {
         db.addName(signature, user_id)
             .then((results) => {
                 console.log("issue", results);
                 req.session.signatureId = user_id;
-                res.redirect("/thankyou");
             })
             .catch((err) => {
                 console.log("Error in post welcome ", err);
@@ -58,11 +61,12 @@ app.post("/welcome", (req, res) => {
     } else if (req.statusCode != 200 || signature == "") {
         res.render("welcome", { error: true });
     }
+    res.redirect("/thankyou");
 });
 
 app.get("/thankyou", (req, res) => {
     const { signatureId } = req.session;
-    console.log("");
+    const { userId } = req.session;
     let signature1;
     if (signatureId) {
         db.getSig(signatureId)
@@ -152,7 +156,7 @@ app.get("/signatories/:city", (req, res) => {
                 console.log("Error in city wise signed: ", err);
             });
     } else {
-        res.redirect("/register");
+        res.redirect("/registration");
     }
 });
 
@@ -190,6 +194,9 @@ app.post("/registration", (req, res) => {
                         res.redirect("/profile");
                     })
                     .catch((err) => {
+                        res.render("registration", {
+                            error2: true,
+                        });
                         console.log("Error in post registration ", err);
                     });
             });
@@ -213,7 +220,7 @@ app.post("/profile", (req, res) => {
     let city = req.body.city;
     let url = req.body.url;
     let user_id = req.session.userId;
-    if (url.startsWith("http")) {
+    if (url.startsWith("http") || url == "") {
         db.adduserinfo(age, city, url, user_id)
             .then(() => {
                 console.log("sucsessfull inserted");
@@ -221,7 +228,7 @@ app.post("/profile", (req, res) => {
             .catch((err) => {
                 console.log("error in inserting user info", err);
             });
-        res.redirect("/profile");
+        res.redirect("/welcome");
     } else {
         console.log("Bad url", url);
         res.render("profile", {
@@ -286,6 +293,23 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.listen(8080, () => {
+app.use("/profile/edit", (req, res) => {
+    const { userId } = req.session;
+    if (userId) {
+        db.getusertableinfo(userId)
+            .then((result) => {
+                console.log("user table row", result);
+                return result;
+            })
+            .then((result) => {
+                res.render("editprofile", {
+                    result1: result,
+                });
+            });
+    } else {
+        res.redirect("/registration");
+    }
+});
+app.listen(process.env.PORT || 8080, () => {
     console.log("my petition server is running");
 });

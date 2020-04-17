@@ -1,5 +1,8 @@
 const spicedPg = require("spiced-pg");
-const db = spicedPg("postgres:postgres:postgres@localhost:5432/petition"); //need to create new petition database - replace actors with new name
+const db = spicedPg(
+    process.env.DATABASE_URL ||
+        "postgres:postgres:postgres@localhost:5432/petition"
+); //need to create new petition database - replace actors with new name
 
 module.exports.getNames = () => {
     return db
@@ -86,6 +89,17 @@ module.exports.getpass = (email) => {
         })
         .catch((err) => {
             console.log("errrrrrrr", err);
+        });
+};
+
+module.exports.getusertableinfo = (userId) => {
+    return db
+        .query(`SELECT * FROM users WHERE id = ${userId};`)
+        .then((results) => {
+            return results.rows;
+        })
+        .catch((err) => {
+            console.log("err in get user table info", err);
         });
 };
 
