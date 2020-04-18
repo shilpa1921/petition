@@ -67,6 +67,7 @@ app.post("/welcome", (req, res) => {
 app.get("/thankyou", (req, res) => {
     const { signatureId } = req.session;
     const { userId } = req.session;
+    signatureId = userId;
     let signature1;
     if (signatureId) {
         db.getSig(signatureId)
