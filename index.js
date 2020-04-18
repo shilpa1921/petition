@@ -344,6 +344,8 @@ app.post("/editprofile", (req, res) => {
             ])
                 .then(() => {
                     req.session.signatureId = userId;
+                })
+                .then(() => {
                     res.redirect("/thankyou");
                 })
                 .catch((err) => {
@@ -376,6 +378,8 @@ app.post("/editprofile", (req, res) => {
         ])
             .then(() => {
                 req.session.signatureId = userId;
+            })
+            .then(() => {
                 res.redirect("/thankyou");
             })
             .catch((err) => {
