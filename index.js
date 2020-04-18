@@ -319,7 +319,6 @@ app.get("/editprofile", (req, res) => {
 });
 
 app.post("/editprofile", (req, res) => {
-    console.log("shilpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     let {
         first_name,
         last_name,
@@ -330,18 +329,18 @@ app.post("/editprofile", (req, res) => {
         url,
     } = req.body;
     const { userId } = req.session;
-    console.log("shilpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", email_add);
+
     if (password != "") {
         hash(password).then((hashedPw) => {
             Promise.all([
-                db.updateFullAccount(
+                db.updatewithpw(
                     first_name,
                     last_name,
                     email_add,
                     hashedPw,
                     userId
                 ),
-                db.upsertProfileInfo(age, city, url, userId),
+                db.upsertProfile(age, city, url, userId),
             ])
                 .then(() => {
                     res.redirect("/thankyou");
@@ -371,8 +370,8 @@ app.post("/editprofile", (req, res) => {
         });
     } else {
         Promise.all([
-            db.updateAccountNoPw(first_name, last_name, email_add, userId),
-            db.upsertProfileInfo(age, city, url, userId),
+            db.updatewithoutpw(first_name, last_name, email_add, userId),
+            db.upsertProfile(age, city, url, userId),
         ])
             .then(() => {
                 res.redirect("/thankyou");

@@ -19,7 +19,8 @@ module.exports.getNames = () => {
 module.exports.byCityName = (city) => {
     return db
         .query(
-            `SELECT users.first_name AS first_name, users.last_name AS last_name, user_profiles.age As age, user_profiles.url As url FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON signatures.user_id = user_profiles.user_id WHERE user_profiles.city = '${city}';  `
+            `SELECT users.first_name AS first_name, users.last_name AS last_name, user_profiles.age As age, user_profiles.url As url FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON signatures.user_id = user_profiles.user_id WHERE user_profiles.city = $1;  `,
+            [city]
         )
         .then((results) => {
             return results.rows;
@@ -59,9 +60,9 @@ module.exports.sigTotal = () => {
 
 module.exports.getSig = (signatureId) => {
     return db
-        .query(
-            `SELECT signature FROM signatures WHERE user_id = ${signatureId} `
-        )
+        .query(`SELECT signature FROM signatures WHERE user_id = $1; `, [
+            signatureId,
+        ])
         .then((results) => {
             return results.rows[0].signature;
         })
@@ -72,7 +73,7 @@ module.exports.getSig = (signatureId) => {
 
 module.exports.checkSign = (sessionid) => {
     return db
-        .query(`SELECT user_id FROM signatures WHERE user_id = ${sessionid} `)
+        .query(`SELECT user_id FROM signatures WHERE user_id =$1 `, [sessionid])
         .then((results) => {
             return results;
         })
@@ -83,7 +84,7 @@ module.exports.checkSign = (sessionid) => {
 
 module.exports.deleteSignature = (userId) => {
     return db
-        .query(`DELETE FROM signatures WHERE user_id = ${userId}`)
+        .query(`DELETE FROM signatures WHERE user_id = $1`, [userId])
         .then(() => {
             console.log("SUCESSFULLY DELETED");
         })
@@ -94,7 +95,7 @@ module.exports.deleteSignature = (userId) => {
 
 module.exports.getpass = (email) => {
     return db
-        .query(`SELECT * FROM users WHERE email = '${email}';`)
+        .query(`SELECT * FROM users WHERE email = $1;`, [email])
         .then((results) => {
             return results;
         })
@@ -106,7 +107,8 @@ module.exports.getpass = (email) => {
 module.exports.getusertableinfo = (userId) => {
     return db
         .query(
-            `SELECT users.first_name AS first_name, users.last_name AS last_name, users.email AS email, user_profiles.age As age, user_profiles.city As city ,user_profiles.url As url FROM users LEFT JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = ${userId} `
+            `SELECT users.first_name AS first_name, users.last_name AS last_name, users.email AS email, user_profiles.age As age, user_profiles.city As city ,user_profiles.url As url FROM users LEFT JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $1 `,
+            [userId]
         )
         .then((results) => {
             console.log("db query", results.rows);
@@ -125,33 +127,22 @@ module.exports.adduserinfo = (age, city, url, user_id) => {
         [age, city, url, user_id]
     );
 };
-module.exports.updateFullAccount = (
-    first_name,
-    last_name,
-    email,
-    password,
-    id
-) => {
+module.exports.updatewithpw = (first_name, last_name, email, password, id) => {
     return db.query(
         `UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5;`,
         [first_name, last_name, email, password, id]
     );
 };
-module.exports.updateAccountNoPw = (
-    first_name,
-    last_name,
-    email_add,
-    userId
-) => {
+module.exports.updatewithoutpw = (first_name, last_name, email_add, userId) => {
     return db.query(
         `UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE id = $4;`,
         [first_name, last_name, email_add, userId]
     );
 };
 
-module.exports.upsertProfileInfo = (age, city, url, user_id) => {
+module.exports.upsertProfile = (Age, city, url, userId) => {
     return db.query(
         `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city = $2, url = $3;`,
-        [age, city, url, user_id]
+        [Age, city, url, userId]
     );
 };
