@@ -343,6 +343,7 @@ app.post("/editprofile", (req, res) => {
                 db.upsertProfile(age, city, url, userId),
             ])
                 .then(() => {
+                    req.session.signatureId = userId;
                     res.redirect("/thankyou");
                 })
                 .catch((err) => {
@@ -374,6 +375,7 @@ app.post("/editprofile", (req, res) => {
             db.upsertProfile(age, city, url, userId),
         ])
             .then(() => {
+                req.session.signatureId = userId;
                 res.redirect("/thankyou");
             })
             .catch((err) => {
