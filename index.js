@@ -54,6 +54,7 @@ app.post("/welcome", (req, res) => {
             .then((results) => {
                 console.log("issue", results);
                 req.session.signatureId = user_id;
+                res.redirect("/thankyou");
             })
             .catch((err) => {
                 console.log("Error in post welcome ", err);
@@ -61,7 +62,6 @@ app.post("/welcome", (req, res) => {
     } else if (req.statusCode != 200 || signature == "") {
         res.render("welcome", { error: true });
     }
-    res.redirect("/thankyou");
 });
 
 app.get("/thankyou", (req, res) => {
@@ -272,10 +272,12 @@ app.post("/login", (req, res) => {
             console.log("match", match);
             if (match) {
                 req.session.userId = id;
+
                 sessionid = req.session.userId;
+                console.log("after match", sessionid);
                 db.checkSign(sessionid).then((results) => {
                     let count = results.rowCount;
-
+                    console.log("count", count);
                     if (count == 0) {
                         res.redirect("/welcome");
                     } else {
@@ -309,6 +311,10 @@ app.use("/profile/edit", (req, res) => {
     } else {
         res.redirect("/registration");
     }
+});
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect("/login");
 });
 app.listen(process.env.PORT || 8080, () => {
     console.log("my petition server is running");

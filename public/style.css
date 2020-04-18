@@ -72,12 +72,12 @@ canvas {
 }
 
 #h1thankyou {
-    padding: 20px;
+    padding: 50px;
     color: tomato;
     font-family: Arial, Helvetica, sans-serif;
 }
 #link {
-    padding-left: 50px;
+    padding-left: 20px;
 }
 #error {
     text-align: center;
@@ -103,11 +103,15 @@ canvas {
 /* signatories page */
 #container3 {
     min-height: 100vh;
-
+    text-align: center;
     background-image: url(../sign.jpg);
     background-size: cover;
 }
 
+#container3 h1 {
+    top: 30px;
+    position: relative;
+}
 #headingsign {
     color: tomato;
     text-align: center;
@@ -116,7 +120,6 @@ canvas {
 }
 #signlist {
     color: blue;
-    padding-left: 600px;
     font-weight: 900;
     font-family: "Courier New", Courier, monospace;
 }
@@ -176,8 +179,12 @@ canvas {
     background-size: cover;
     text-align: center;
     height: 100vh;
-    padding-top: 80px;
+
     color: darkred;
+}
+
+#citycontainer h1 {
+    padding-top: 60px;
 }
 
 #list {
@@ -194,4 +201,15 @@ canvas {
     font-size: 25px;
     margin: 30px;
     font-weight: bold;
+}
+
+.nav div {
+    margin-right: 20px;
+    font-size: 12px;
+    display: inline-block;
+    float: right;
+}
+.nav a {
+    color: white;
+    font-size: 20px;
 }
