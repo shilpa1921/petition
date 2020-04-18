@@ -76,32 +76,31 @@ app.get("/thankyou", (req, res) => {
                 signature1 = result;
                 return signature1;
             })
-            .catch((err) => {
-                console.log("Error in countSupports: ", err);
-            });
-        db.sigTotal()
-            .then((results) => {
-                let sigTotal = results.rowCount;
-                console.log("userid", results.rows[0].user_id);
+            .then((signature1) => {
+                db.sigTotal()
+                    .then((results) => {
+                        let sigTotal = results.rowCount;
+                        console.log("userid", results.rows[0].user_id);
 
-                console.log("sig total: ", sigTotal);
-                // we can also get signature of last user by
-                // let len = sigToatl-1;
-                // let sig = results.rows[len].signature;
+                        console.log("sig total: ", sigTotal);
+                        // we can also get signature of last user by
+                        // let len = sigToatl-1;
+                        // let sig = results.rows[len].signature;
 
-                return sigTotal;
-            })
-            .then((sigTotal) => {
-                console.log("shilpa", signature1);
-                res.render("thankyou", {
-                    layout: "main",
-                    sigTotal,
-                    signature1,
-                });
-            })
-            .catch((err) => {
-                console.log("err in get thankyou ", err);
-                //TO DO: reroute to "/welcome" with error message
+                        return sigTotal;
+                    })
+                    .then((sigTotal) => {
+                        console.log("shilpa", signature1);
+                        res.render("thankyou", {
+                            layout: "main",
+                            sigTotal,
+                            signature1,
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("err in get thankyou ", err);
+                        //TO DO: reroute to "/welcome" with error message
+                    });
             });
     } else {
         res.redirect("/welcome");
