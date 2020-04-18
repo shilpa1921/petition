@@ -295,7 +295,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.use("/profile/edit", (req, res) => {
+app.get("/editprofile", (req, res) => {
     const { userId } = req.session;
     if (userId) {
         db.getusertableinfo(userId)
@@ -305,13 +305,123 @@ app.use("/profile/edit", (req, res) => {
             })
             .then((result) => {
                 res.render("editprofile", {
-                    result1: result,
+                    first_name: result[0].first_name,
+                    last_name: result[0].first_name,
+                    email: result[0].email,
+                    age: result[0].age,
+                    city: result[0].city,
+                    url: result[0].url,
                 });
             });
     } else {
         res.redirect("/registration");
     }
 });
+
+app.post("/editprofile", (req, res) => {
+    console.log("shilpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    let {
+        first_name,
+        last_name,
+        email_add,
+        password,
+        age,
+        city,
+        url,
+    } = req.body;
+    const { userId } = req.session;
+    console.log("shilpaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", email_add);
+    if (password != "") {
+        hash(password).then((hashedPw) => {
+            Promise.all([
+                db.updateFullAccount(
+                    first_name,
+                    last_name,
+                    email_add,
+                    hashedPw,
+                    userId
+                ),
+                db.upsertProfileInfo(age, city, url, userId),
+            ])
+                .then(() => {
+                    res.redirect("/thankyou");
+                })
+                .catch((err) => {
+                    console.log("Error in full update: ", err);
+
+                    db.getusertableinfo(userId)
+                        .then((result) => {
+                            console.log("user table row", result);
+                            return result;
+                        })
+                        .then((result) => {
+                            res.render("editprofile", {
+                                first_name: result[0].first_name,
+                                last_name: result[0].first_name,
+                                email: result[0].email,
+                                age: result[0].age,
+                                city: result[0].city,
+                                url: result[0].url,
+                            });
+                        })
+                        .catch((err) => {
+                            console.log("Error in re-rendering /thanks: ", err);
+                        });
+                });
+        });
+    } else {
+        Promise.all([
+            db.updateAccountNoPw(first_name, last_name, email_add, userId),
+            db.upsertProfileInfo(age, city, url, userId),
+        ])
+            .then(() => {
+                res.redirect("/thankyou");
+            })
+            .catch((err) => {
+                console.log("Error in partial update: ", err);
+
+                db.getusertableinfo(userId)
+                    .then((result) => {
+                        console.log("user table row", result);
+                        return result;
+                    })
+                    .then((result) => {
+                        res.render("editprofile", {
+                            first_name: result[0].first_name,
+                            last_name: result[0].first_name,
+                            email: result[0].email,
+                            age: result[0].age,
+                            city: result[0].city,
+                            url: result[0].url,
+                        });
+                    })
+                    .catch((err) => {
+                        console.log("Error : ", err);
+                    });
+            });
+    }
+});
+
+// app.post("/thankyou/delete", (req, res) => {
+//     const { userId } = req.session;
+//     const { signatureId } = req.session;
+//     console.log("shilpaaaaaaaaaa");
+
+//     db.deleteSignature(userId)
+//         .then((res) => {
+//             // delete signature ID cookie
+//             console.log("deleting user -id", userId);
+
+//             console.log("SUCESSFULLY DELETED");
+//             res.signatureId = userId;
+//             res.render("welcome");
+
+//             // delete res.rows[0].user_id;
+//         })
+//         .catch((err) => {
+//             console.log("Error in delete Signature: ", err);
+//         });
+// });
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/login");

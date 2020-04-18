@@ -81,6 +81,17 @@ module.exports.checkSign = (sessionid) => {
         });
 };
 
+module.exports.deleteSignature = (userId) => {
+    return db
+        .query(`DELETE FROM signatures WHERE user_id = ${userId}`)
+        .then(() => {
+            console.log("SUCESSFULLY DELETED");
+        })
+        .catch((err) => {
+            console.log("error in deleting signature", err);
+        });
+};
+
 module.exports.getpass = (email) => {
     return db
         .query(`SELECT * FROM users WHERE email = '${email}';`)
@@ -94,8 +105,11 @@ module.exports.getpass = (email) => {
 
 module.exports.getusertableinfo = (userId) => {
     return db
-        .query(`SELECT * FROM users WHERE id = ${userId};`)
+        .query(
+            `SELECT users.first_name AS first_name, users.last_name AS last_name, users.email AS email, user_profiles.age As age, user_profiles.city As city ,user_profiles.url As url FROM users LEFT JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = ${userId} `
+        )
         .then((results) => {
+            console.log("db query", results.rows);
             return results.rows;
         })
         .catch((err) => {
@@ -108,6 +122,36 @@ module.exports.adduserinfo = (age, city, url, user_id) => {
         `
     INSERT INTO user_profiles (age, city, url, user_id)
     VALUES($1, $2, $3, $4) `,
+        [age, city, url, user_id]
+    );
+};
+module.exports.updateFullAccount = (
+    first_name,
+    last_name,
+    email,
+    password,
+    id
+) => {
+    return db.query(
+        `UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5;`,
+        [first_name, last_name, email, password, id]
+    );
+};
+module.exports.updateAccountNoPw = (
+    first_name,
+    last_name,
+    email_add,
+    userId
+) => {
+    return db.query(
+        `UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE id = $4;`,
+        [first_name, last_name, email_add, userId]
+    );
+};
+
+module.exports.upsertProfileInfo = (age, city, url, user_id) => {
+    return db.query(
+        `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city = $2, url = $3;`,
         [age, city, url, user_id]
     );
 };

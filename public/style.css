@@ -213,3 +213,19 @@ canvas {
     color: white;
     font-size: 20px;
 }
+
+img {
+    margin-left: 70px;
+    padding-left: 50px;
+    border: brown dotted 2px;
+    height: 100px;
+    width: 200px;
+}
+#delete {
+    border: none;
+    width: auto;
+    text-decoration: underline;
+    background: #424242;
+    box-shadow: none;
+    grid-row: 3;
+}
