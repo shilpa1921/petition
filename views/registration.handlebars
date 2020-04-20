@@ -5,16 +5,19 @@
     {{/if}}
      <form action="/registration" method="POST" id="sign-form">
     
-    <input id  = "first" name="first_name" placeholder="First name..." required >
+    <input id  = "first" name="first_name" placeholder="First name..." required  autocomplete="off"
+>
     <br>
     
-    <input id  = "last" name="last_name" placeholder="last name..." required >
+    <input id  = "last" name="last_name" placeholder="last name..." required autocomplete="off"
+>
     <br>
     
     <input id  = "email" name="email_add" placeholder="Email Address..." autocomplete="off">
     <br>
     
-    <input id  = "password" name="password" type = "password" placeholder="password..."  >
+    <input id  = "password" name="password" type = "password" placeholder="password..." autocomplete="off"
+ >
    
     <br>
     <button id = "regsignup"> SIGN UP</button>

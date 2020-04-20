@@ -407,26 +407,16 @@ app.post("/editprofile", (req, res) => {
     }
 });
 
-// app.post("/thankyou/delete", (req, res) => {
-//     const { userId } = req.session;
-//     const { signatureId } = req.session;
-//     console.log("shilpaaaaaaaaaa");
-
-//     db.deleteSignature(userId)
-//         .then((res) => {
-//             // delete signature ID cookie
-//             console.log("deleting user -id", userId);
-
-//             console.log("SUCESSFULLY DELETED");
-//             res.signatureId = userId;
-//             res.render("welcome");
-
-//             // delete res.rows[0].user_id;
-//         })
-//         .catch((err) => {
-//             console.log("Error in delete Signature: ", err);
-//         });
-// });
+app.post("/thankyou/delete", (req, res) => {
+    db.deleteSignature(req.session.userID)
+        .then(() => {
+            delete req.session.signatureId;
+            res.redirect("/welcome");
+        })
+        .catch((err) => {
+            console.log("Error in delete Signature: ", err);
+        });
+});
 app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/login");
