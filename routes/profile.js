@@ -87,7 +87,7 @@ router.post("/edit", (req, res) => {
 
                 .then(() => {
                     if (!req.session.signatureId) {
-                        res.redirect("welcime");
+                        res.redirect("/welcome");
                     } else {
                         req.session.signatureId = userId;
                         res.redirect("/thankyou");
@@ -123,11 +123,14 @@ router.post("/edit", (req, res) => {
             db.upsertProfile(age, city, url, userId),
         ])
             .then(() => {
-                req.session.signatureId = userId;
+                if (!req.session.signatureId) {
+                    res.redirect("/welcome");
+                } else {
+                    req.session.signatureId = userId;
+                    res.redirect("/thankyou");
+                }
             })
-            .then(() => {
-                res.redirect("/thankyou");
-            })
+
             .catch((err) => {
                 console.log("Error in partial update: ", err);
 

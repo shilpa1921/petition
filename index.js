@@ -192,6 +192,7 @@ app.post("/thankyou/delete", requireSignature, (req, res) => {
     db.deleteSignature(req.session.userId)
         .then(() => {
             delete req.session.signatureId;
+            console.log("Signature id after delete", req.session.signatureId);
             res.redirect("/welcome");
         })
         .catch((err) => {
