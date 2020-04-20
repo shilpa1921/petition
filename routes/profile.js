@@ -84,12 +84,16 @@ router.post("/edit", (req, res) => {
                 ),
                 db.upsertProfile(age, city, url, userId),
             ])
+
                 .then(() => {
-                    req.session.signatureId = userId;
+                    if (!req.session.signatureId) {
+                        res.redirect("welcime");
+                    } else {
+                        req.session.signatureId = userId;
+                        res.redirect("/thankyou");
+                    }
                 })
-                .then(() => {
-                    res.redirect("/thankyou");
-                })
+
                 .catch((err) => {
                     console.log("Error in full update: ", err);
 
