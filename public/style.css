@@ -73,11 +73,12 @@ canvas {
 
 #h1thankyou {
     padding: 50px;
-    color: tomato;
+    color: darkred;
     font-family: Arial, Helvetica, sans-serif;
 }
 #link {
     padding-left: 20px;
+    color: blue;
 }
 #error {
     text-align: center;
@@ -106,6 +107,7 @@ canvas {
     text-align: center;
     background-image: url(../sign.jpg);
     background-size: cover;
+    color: darkred;
 }
 
 #container3 h1 {
@@ -216,7 +218,10 @@ canvas {
 }
 
 #delete {
+    margin: 30px;
     font-size: large;
     border: none;
+    color: blue;
     text-decoration: underline;
+    background-color: Transparent;
 }

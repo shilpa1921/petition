@@ -2,7 +2,7 @@
  
  <div id = "editcontainer">
      <h1>Edit your profile {{first_name}} </h1>
- <form action="/editprofile" method="POST" id="sign-form">
+ <form action="edit" method="POST" id="sign-form">
     <label for = "first">First Name</label>
     <input id  = "first" name="first_name" value="{{first_name}}" class = "f" >
     <br>
@@ -25,7 +25,9 @@
     <label for = "url">Url</label>
     <input id  = "url" name="url"class = "c" value = "{{url}}" >
     <br>
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <button id = "regsignup"> UPDATE</button>
+    
     </form>
 
     </div>
