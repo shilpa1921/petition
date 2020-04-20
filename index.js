@@ -2,9 +2,11 @@ const express = require("express");
 const app = express();
 const db = require("./db.js");
 const handlebars = require("express-handlebars");
-
+app.engine("handlebars", handlebars());
+app.set("view engine", "handlebars");
 const cookieSession = require("cookie-session");
 const { hash, compare } = require("./bc");
+const csurf = require("csurf");
 app.use(
     cookieSession({
         secret: `I'm always angry.`,
@@ -17,10 +19,14 @@ app.use(
         extended: false,
     })
 );
-app.use(express.static("./public"));
 
-app.engine("handlebars", handlebars());
-app.set("view engine", "handlebars");
+app.use(csurf());
+app.use(express.static("./public"));
+app.use((req, res, next) => {
+    res.set("x-frame-options", "deny");
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 
 app.get("/", (req, res) => {
     console.log("get request to / route succeeded");
@@ -47,13 +53,21 @@ app.get("/welcome", (req, res) => {
 app.post("/welcome", (req, res) => {
     const signature = req.body.signature;
     const user_id = req.session.userId;
-    console.log("siganture", signature);
+    console.log("siganture for issue", signature);
 
     if (signature != "") {
         db.addName(signature, user_id)
             .then((results) => {
                 console.log("issue", results);
-                req.session.signatureId = user_id;
+
+                req.session.signatureId = req.session.userId;
+
+                console.log("user for id   issue", user_id);
+
+                console.log(
+                    "siganture for id   issue",
+                    req.session.signatureId
+                );
                 res.redirect("/thankyou");
             })
             .catch((err) => {
@@ -67,7 +81,8 @@ app.post("/welcome", (req, res) => {
 app.get("/thankyou", (req, res) => {
     const { signatureId } = req.session;
     const { userId } = req.session;
-
+    console.log("signatureid sig", signatureId);
+    console.log("userId sig", userId);
     let signature1;
     if (signatureId) {
         db.getSig(signatureId)
@@ -207,12 +222,12 @@ app.post("/registration", (req, res) => {
     }
 });
 app.get("/profile", (req, res) => {
-    // const { userId } = req.session;
-    // if (userId) {
-    //     res.redirect("/welcome");
-    // } else {
-    res.render("profile");
-    // }
+    const { userId } = req.session;
+    if (userId) {
+        res.render("profile");
+    } else {
+        res.redirect("/registration");
+    }
 });
 
 app.post("/profile", (req, res) => {
@@ -408,7 +423,7 @@ app.post("/editprofile", (req, res) => {
 });
 
 app.post("/thankyou/delete", (req, res) => {
-    db.deleteSignature(req.session.userID)
+    db.deleteSignature(req.session.userId)
         .then(() => {
             delete req.session.signatureId;
             res.redirect("/welcome");
@@ -421,6 +436,6 @@ app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/login");
 });
-app.listen(process.env.PORT || 8080, () => {
+app.listen(process.env.PORT || 8081, () => {
     console.log("my petition server is running");
 });

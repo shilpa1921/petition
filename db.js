@@ -84,7 +84,7 @@ module.exports.checkSign = (sessionid) => {
 
 module.exports.deleteSignature = (userId) => {
     return db
-        .query(`DELETE FROM signatures WHERE user_id = $1`, [userId])
+        .query(`DELETE FROM signatures WHERE user_id = $1;`, [userId])
         .then(() => {
             console.log("SUCESSFULLY DELETED");
         })
