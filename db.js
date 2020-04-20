@@ -19,7 +19,7 @@ module.exports.getNames = () => {
 module.exports.byCityName = (city) => {
     return db
         .query(
-            `SELECT users.first_name AS first_name, users.last_name AS last_name, user_profiles.age As age, user_profiles.url As url FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON signatures.user_id = user_profiles.user_id WHERE user_profiles.city = $1;  `,
+            `SELECT users.first_name AS first_name, users.last_name AS last_name, user_profiles.age As age, user_profiles.url As url FROM users JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON signatures.user_id = user_profiles.user_id WHERE LOWER(user_profiles.city) = LOWER($1);  `,
             [city]
         )
         .then((results) => {
