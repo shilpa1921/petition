@@ -1,5 +1,7 @@
 <div id="container1">
     {{> logout}}
+
+    
     <h1 id="h1welcome">Welcome to my petition </h1>
      
     <form action="/welcome" method="POST" id="sign-form">
@@ -17,11 +19,10 @@
 
 
     </form>
+    </div>
     {{#if error}}
         <h2 id = "error">Oh no, something went wrong. Please refresh the page</h2>
     {{/if}}
 
 
-</div>
 
-{{> logout}}
