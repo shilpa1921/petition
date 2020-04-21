@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const {
     requireLogOut,
     requireNoSignature,
@@ -71,12 +72,6 @@ router.post("/edit", (req, res) => {
         url,
     } = req.body;
     const { userId } = req.session;
-    let age1;
-    if (age == "") {
-        age1 = null;
-    } else {
-        age1 = age;
-    }
 
     if (password != "") {
         console.log("last name", last_name);
@@ -89,7 +84,7 @@ router.post("/edit", (req, res) => {
                     hashedPw,
                     userId
                 ),
-                db.upsertProfile(age1, city, url, userId),
+                db.upsertProfile(age, city, url, userId),
             ])
 
                 .then(() => {
@@ -112,7 +107,7 @@ router.post("/edit", (req, res) => {
                         .then((result) => {
                             res.render("edit", {
                                 first_name: result[0].first_name,
-                                last_name: result[0].first_name,
+                                last_name: result[0].last_name,
                                 email: result[0].email,
                                 age: result[0].age,
                                 city: result[0].city,
@@ -127,7 +122,7 @@ router.post("/edit", (req, res) => {
     } else {
         Promise.all([
             db.updatewithoutpw(first_name, last_name, email_add, userId),
-            db.upsertProfile(age1, city, url, userId),
+            db.upsertProfile(age, city, url, userId),
         ])
             .then(() => {
                 if (!req.session.signatureId) {
@@ -149,7 +144,7 @@ router.post("/edit", (req, res) => {
                     .then((result) => {
                         res.render("edit", {
                             first_name: result[0].first_name,
-                            last_name: result[0].first_name,
+                            last_name: result[0].last_name,
                             email: result[0].email,
                             age: result[0].age,
                             city: result[0].city,

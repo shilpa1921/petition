@@ -42,8 +42,6 @@ input:focus {
 }
 
 canvas {
-    width: 500px;
-    height: 100px;
     border: tomato dotted 2px;
     background-color: lightyellow;
     padding: 5px;
@@ -71,6 +69,12 @@ canvas {
     background-image: url(../thankyou1.jpg);
     background-size: cover;
     text-align: center;
+}
+#editcontainer {
+    background-image: url(../regbackground.jpg);
+    background-size: cover;
+    text-align: center;
+    height: 100vh;
 }
 
 #h1thankyou {
@@ -130,7 +134,8 @@ canvas {
 #headingsign {
     color: tomato;
     text-align: center;
-    padding: 30px;
+    padding: 40px;
+
     font-family: Arial, Helvetica, sans-serif;
 }
 #signlist {
@@ -164,14 +169,6 @@ canvas {
     left: 43px;
     position: relative;
 }
-#editcontainer {
-    background-image: url(../regbackground.jpg);
-    background-size: cover;
-    text-align: center;
-    height: 100vh;
-    padding-top: 80px;
-    color: darkred;
-}
 
 #logcontainer {
     background-image: url(../loginpage.jpg);
@@ -191,7 +188,7 @@ canvas {
     color: darkred;
 }
 #citycontainer {
-    background-image: url(../city.jpg);
+    background-image: url(../city2.jpg);
     background-size: cover;
     text-align: center;
     height: 100vh;

@@ -147,25 +147,13 @@ app.get("/signatories", (req, res) => {
 
     db.getNames()
         .then((results) => {
-            let list = [];
-
-            for (let i = 0; i < results.length; i++) {
-                let item = results[i];
-                list.push({
-                    first: ` ${item.first_name}`,
-                    last: `  ${item.last_name} `,
-                    age: ` ${item.age}`,
-                    city: `${item.city}`,
-                    url: ` ${item.url} `,
-                });
-            }
-            console.log("list: ", list);
-            return list;
+            console.log("list: ", results);
+            return results;
         })
-        .then((list) => {
+        .then((results) => {
             res.render("signatories", {
                 layout: "main",
-                signed: list,
+                signed: results,
             });
         })
         .catch((err) => {

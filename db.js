@@ -4,6 +4,7 @@ const db = spicedPg(
         "postgres:postgres:postgres@localhost:5432/petition"
 ); //need to create new petition database - replace actors with new name
 
+const input = require("./check");
 module.exports.getNames = () => {
     return db
         .query(
@@ -124,7 +125,7 @@ module.exports.adduserinfo = (age, city, url, user_id) => {
         `
     INSERT INTO user_profiles (age, city, url, user_id)
     VALUES($1, $2, $3, $4) `,
-        [age, city, url, user_id]
+        [input.checkAge(age), city, input.checkUrl(url), user_id]
     );
 };
 module.exports.updatewithpw = (first_name, last_name, email, password, id) => {
@@ -140,9 +141,9 @@ module.exports.updatewithoutpw = (first_name, last_name, email_add, userId) => {
     );
 };
 
-module.exports.upsertProfile = (Age1, city, url, userId) => {
+module.exports.upsertProfile = (age, city, url, userId) => {
     return db.query(
         `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city = $2, url = $3;`,
-        [Age1, city, url, userId]
+        [input.checkAge(age), city, input.checkUrl(url), userId]
     );
 };

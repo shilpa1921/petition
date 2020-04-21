@@ -2,7 +2,7 @@
     const canvas = $("canvas");
     const canvasContext = canvas[0].getContext("2d");
     let mouseDown = false;
-    let offset = canvas.offset();
+    let offset = canvas[0].getBoundingClientRect();
     let left;
     let top;
     let dataURL;
