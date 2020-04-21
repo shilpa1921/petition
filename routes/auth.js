@@ -60,12 +60,7 @@ app.post("/registration", requireLogOut, (req, res) => {
 });
 
 app.get("/login", requireLogOut, (req, res) => {
-    // const { userId } = req.session;
-    // if (userId) {
-    //     res.redirect("/welcome");
-    // } else {
     res.render("login");
-    // }
 });
 
 app.post("/login", requireLogOut, (req, res) => {
@@ -112,6 +107,6 @@ app.post("/login", requireLogOut, (req, res) => {
             }
         })
         .catch((err) => {
-            res.render("login", { error3: true });
+            res.render("login", { error9: true });
         });
 });
