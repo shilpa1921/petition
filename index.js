@@ -160,7 +160,7 @@ app.get("/signatories", (req, res) => {
             console.log("err in get signatories", err);
         });
 });
-app.get("/signatories/:city", requireSignature, (req, res) => {
+app.get("/signatories/:city", (req, res) => {
     const { signatureId } = req.session;
     // if a cookie is set, render
 
