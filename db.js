@@ -4,7 +4,7 @@ const db = spicedPg(
         "postgres:postgres:postgres@localhost:5432/petition"
 ); //need to create new petition database - replace actors with new name
 
-const input = require("./check");
+const input = require("./input");
 module.exports.getNames = () => {
     return db
         .query(
