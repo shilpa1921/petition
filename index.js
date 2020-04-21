@@ -203,6 +203,9 @@ app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/login");
 });
-app.listen(process.env.PORT || 8081, () => {
-    console.log("my petition server is running");
-});
+
+if (require.main === module) {
+    app.listen(process.env.PORT || 8081, () => {
+        console.log("my petition server is running");
+    });
+}
