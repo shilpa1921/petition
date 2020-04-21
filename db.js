@@ -140,9 +140,9 @@ module.exports.updatewithoutpw = (first_name, last_name, email_add, userId) => {
     );
 };
 
-module.exports.upsertProfile = (Age, city, url, userId) => {
+module.exports.upsertProfile = (Age1, city, url, userId) => {
     return db.query(
         `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age = $1, city = $2, url = $3;`,
-        [Age, city, url, userId]
+        [Age1, city, url, userId]
     );
 };

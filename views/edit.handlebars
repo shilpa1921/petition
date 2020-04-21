@@ -1,33 +1,36 @@
  
  
  <div id = "editcontainer">
-     <h1>Edit your profile {{first_name}} </h1>
- <form action="edit" method="POST" id="sign-form">
-    <label for = "first">First Name</label>
-    <input id  = "first" name="first_name" value="{{first_name}}" class = "f" >
-    <br>
-    <label for = "last">Last Name</label>
-    <input id  = "last" name="last_name" class = "f" value="{{last_name}}" >
-    <br>
-    <label for = "email">Email Address</label>
-    <input id  = "email" name="email_add"  autocomplete="off" value="{{email}}">
-    <br>
-    <label for = "password">Password</label>
-    <input id  = "password" name="password" type = "password" class = "p" value="" >
-   
-    <br>
-     <label for = "age">Age</label>
-    <input id  = "age" name="age" class = "g"  value = "{{age}}">
-    <br>
-    <label for = "city">City</label>
-    <input id  = "city" name="city" class = "g" value = "{{city}}">
-    <br>
-    <label for = "url">Url</label>
-    <input id  = "url" name="url"class = "c" value = "{{url}}" >
-    <br>
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <button id = "regsignup"> UPDATE</button>
-    
-    </form>
+     <h1>Edit your profile {{first_name}} {{last_name}}</h1>
 
+    <div id = "editpage">
+
+            <form action="edit" method="POST" id="sign-form">
+            <label for = "first">First Name</label>
+            <input id  = "first" name="first_name" value="{{first_name}}" class = "f" >
+            <br>
+            <label for = "last">Last Name</label>
+            <input id  = "last" name="last_name" class = "f" value="{{last_name}}" >
+            <br>
+            <label for = "email">Email Address</label>
+            <input id  = "email" name="email_add"  autocomplete="off" value="{{email}}">
+            <br>
+            <label for = "password">Password</label>
+            <input id  = "password" name="password" type = "password" class = "p" value="" >
+        
+            <br>
+            <label for = "age">Age</label>
+            <input id  = "age" name="age" class = "g"  value = "{{age}}">
+            <br>
+            <label for = "city">City</label>
+            <input id  = "city" name="city" class = "g" value = "{{city}}">
+            <br>
+            <label for = "url">Url</label>
+            <input id  = "url" name="url"class = "c" value = "{{url}}" >
+            <br>
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
+            <button id = "regsignup"> UPDATE</button>
+            
+            </form>
     </div>
+</div>

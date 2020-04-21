@@ -145,7 +145,6 @@ app.get("/thankyou", requireSignature, (req, res) => {
 app.get("/signatories", (req, res) => {
     const { signatureId } = req.session;
 
-    console.log("Errorrrrrrrrrrr", signatureId);
     db.getNames()
         .then((results) => {
             let list = [];

@@ -78,6 +78,17 @@ canvas {
     color: darkred;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+#editpage {
+    padding-left: 30px;
+}
+#topic {
+    color: cyan;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
 #link {
     padding-left: 20px;
     color: blue;
