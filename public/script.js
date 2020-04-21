@@ -21,7 +21,7 @@
                 top = event.clientY - offset.top;
                 canvasContext.lineTo(left, top);
                 canvasContext.stroke();
-
+                canvasContext.lineWidth = 5;
                 dataURL = canvas[0].toDataURL();
                 $("#signature").val(dataURL);
             }
