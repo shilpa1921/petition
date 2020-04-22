@@ -24,7 +24,7 @@ app.post("/registration", requireLogOut, (req, res) => {
     // console.log("email", emailadd);
     if (emailadd == "") {
         res.render("registration", {
-            error2: true,
+            error10: true,
         });
     } else if (
         (first_name != "" && last_name != "" && emailadd != "", password != "")
