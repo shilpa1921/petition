@@ -192,7 +192,7 @@ app.get("/logout", (req, res) => {
 });
 
 if (require.main === module) {
-    app.listen(process.env.PORT || 8081, () => {
+    app.listen(process.env.PORT || 8080, () => {
         console.log("my petition server is running");
     });
 }

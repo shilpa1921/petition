@@ -28,16 +28,18 @@ label {
 
 input {
     width: 300px;
-
     height: 35px;
-    background-color: lightyellow;
-    border: tomato solid 2px;
+
     margin: 5px;
     font-size: 20px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
 }
 input:focus {
     background-color: rgb(252, 252, 178);
-    border: tomato solid 2px;
+
     outline: none;
 }
 
