@@ -73,7 +73,7 @@ canvas {
     text-align: center;
 }
 #editcontainer {
-    background-image: url(../regbackground.jpg);
+    background-image: url(../loginpage.jpg);
     background-size: cover;
     text-align: center;
     height: 100vh;
@@ -89,7 +89,7 @@ canvas {
     padding-left: 30px;
 }
 #topic {
-    color: cyan;
+    color: blue;
     margin-top: 20px;
     margin-bottom: 20px;
     padding-left: 100px;
@@ -148,7 +148,7 @@ canvas {
 }
 
 #regcontainer {
-    background-image: url(../regbackground.jpg);
+    background-image: url(../loginpage.jpg);
     background-size: cover;
     text-align: center;
     height: 100vh;
